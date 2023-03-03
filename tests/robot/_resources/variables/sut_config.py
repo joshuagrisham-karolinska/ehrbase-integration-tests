@@ -17,6 +17,8 @@
 import get_global_configs
 from requests import request
 
+# TODO: Move almost everything below to their own config INI files (one per environment)
+
 GLOBAL_VARS_FROM_YAML_FUNC = get_global_configs.get_variables()
 GLOBAL_PORT_FROM_YAML = GLOBAL_VARS_FROM_YAML_FUNC["GLOBAL_PORT"]
 BASEURL_FROM_YAML = GLOBAL_VARS_FROM_YAML_FUNC["BASEURL"]
@@ -211,96 +213,23 @@ ADMIN_TEST_CONFIG = {
 # @{scapecreds}           %{EHRSCAPE_USER}    %{EHRSCAPE_PASSWORD}
 
 
-def get_variables(sut="TEST", auth_type="BASIC", nodocker="NEIN!", port=GLOBAL_PORT_FROM_YAML):
-    # DEV CONFIG W/ OAUTH
-    if (
-        sut == "DEV"
-        and auth_type == "OAUTH"
-        or (auth_type == "OAUTH" and (nodocker.upper() in ["TRUE", ""]))
-    ):
-        DEV_CONFIG["SECURITY_AUTHTYPE"] = "OAUTH"
-        DEV_CONFIG["ACCESS_TOKEN"] = request(
+def get_variables():
+
+    # Instead of everything happening below, we just want to rely on that the user has set everything they want 
+    #  in one of the three available config variants (ini file, Environment Variable, or passed as a command argument e.g. --BASEURL)
+    result = get_global_configs.get_variables()
+
+    # TODO test if this new "standardized" OAUTH flow below works?
+    #  and maybe rename some of the variables to be standardized (OAUTH_ instead of related to Keycloak?)
+    if (result["SECURITY_AUTHTYPE"] == 'OAUTH'):
+        result["ACCESS_TOKEN"] = request(
             "POST",
-            KC_ACCESS_TOKEN_URL,
+            result["KC_ACCESS_TOKEN_URL"],
             headers=HEADER,
-            data=DEV_CONFIG["OAUTH_ACCESS_GRANT"],
+            data=result["OAUTH_ACCESS_GRANT"],
         ).json()["access_token"]
-        DEV_CONFIG["AUTHORIZATION"] = {
-            "Authorization": "Bearer " + DEV_CONFIG["ACCESS_TOKEN"]
+        result["AUTHORIZATION"] = {
+            "Authorization": "Bearer " + result["ACCESS_TOKEN"]
         }
-        return DEV_CONFIG
 
-    # ADMIN-DEV CONFIG W/ OAUTH
-    if (
-        sut == "ADMIN-DEV"
-        and auth_type == "OAUTH"
-        or (auth_type == "OAUTH" and (nodocker.upper() in ["TRUE", ""]))
-    ):
-        ADMIN_DEV_CONFIG["SECURITY_AUTHTYPE"] = "OAUTH"
-        ADMIN_DEV_CONFIG["ACCESS_TOKEN"] = request(
-            "POST",
-            KC_ACCESS_TOKEN_URL,
-            headers=HEADER,
-            data=ADMIN_DEV_CONFIG["OAUTH_ACCESS_GRANT"],
-        ).json()["access_token"]
-        ADMIN_DEV_CONFIG["AUTHORIZATION"] = {
-            "Authorization": "Bearer " + ADMIN_DEV_CONFIG["ACCESS_TOKEN"]
-        }
-        return ADMIN_DEV_CONFIG
-
-    # TEST CONFIG W/ OAUTH
-    if sut == "TEST" and auth_type == "OAUTH":
-        TEST_CONFIG["SECURITY_AUTHTYPE"] = "OAUTH"
-        TEST_CONFIG["ACCESS_TOKEN"] = request(
-            "POST",
-            KC_ACCESS_TOKEN_URL,
-            headers=HEADER,
-            data=TEST_CONFIG["OAUTH_ACCESS_GRANT"],
-        ).json()["access_token"]
-        TEST_CONFIG["AUTHORIZATION"] = {
-            "Authorization": "Bearer " + TEST_CONFIG["ACCESS_TOKEN"]
-        }
-        return TEST_CONFIG
-
-    # ADMIN-TEST CONFIG W/ OAUTH
-    if sut == "ADMIN-TEST" and auth_type == "OAUTH":
-        ADMIN_TEST_CONFIG["SECURITY_AUTHTYPE"] = "OAUTH"
-        ADMIN_TEST_CONFIG["ACCESS_TOKEN"] = request(
-            "POST",
-            KC_ACCESS_TOKEN_URL,
-            headers=HEADER,
-            data=TEST_CONFIG["OAUTH_ACCESS_GRANT"],
-        ).json()["access_token"]
-        ADMIN_TEST_CONFIG["AUTHORIZATION"] = {
-            "Authorization": "Bearer " + ADMIN_TEST_CONFIG["ACCESS_TOKEN"]
-        }
-        return ADMIN_TEST_CONFIG
-
-    # ADMIN-TEST CONFIG W/ BASIC AUTH
-    if sut == "ADMIN-TEST":
-        return ADMIN_TEST_CONFIG
-
-    # DEV CONFIG W/ BASIC AUTH
-    if sut == "DEV" or (nodocker.upper() in ["TRUE", ""]):
-        return DEV_CONFIG
-
-    # if nodocker.upper() in ["TRUE", ""]:
-    #     return DEV_CONFIG
-
-    # ADMIN-DEV CONFIG W/ BASIC AUTH
-    if sut == "ADMIN-DEV" or (
-        sut == "ADMIN-DEV" and (nodocker.upper() in ["TRUE", ""])
-    ):
-        return ADMIN_DEV_CONFIG
-
-    # TEST CONFIG W/ BASIC AUTH
-    #else:
-    #    print(TEST_CONFIG)
-    #    return TEST_CONFIG
-
-    if sut == "TEST" and auth_type == "BASIC":
-        #TEST_CONFIG["BASEURL"] = "http://localhost:" + port + "/ehrbase/rest/openehr/v1"
-        #TEST_CONFIG["ECISURL"] = "http://localhost:" + port + "/ehrbase/rest/ecis/v1"
-        #TEST_CONFIG["ADMIN_BASEURL"] = "http://localhost:" + port + "/ehrbase/rest/admin"
-        #TEST_CONFIG["HEARTBEAT_URL"] = "http://localhost:" + port + "/ehrbase/rest/status"
-        return TEST_CONFIG
+    return result

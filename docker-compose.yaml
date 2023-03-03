@@ -1,0 +1,62 @@
+version: '3'
+
+networks:
+  ehrbase-net: {}
+
+services:
+
+  ehrbase:
+    container_name: ehrbase
+    image: ehrbase/ehrbase:next
+    ports:
+      - 8080:8080
+    networks:
+      - ehrbase-net
+    env_file:
+      - .env.ehrbase
+    environment:
+      DB_URL: jdbc:postgresql://ehrdb:5432/ehrbase
+      DB_USER_ADMIN: ehrbase
+      DB_PASS_ADMIN: ehrbase
+      DB_USER: ehrbase_restricted
+      DB_PASS: ehrbase_restricted
+    restart: on-failure
+
+  ehrdb:
+    container_name: ehrdb
+    image: ehrbase/ehrbase-postgres:13.4.v2
+    ports:
+      - 5432:5432
+    networks:
+      - ehrbase-net
+    #volumes:
+    #  - ./.pgdata:/var/lib/postgresql/data
+    # Removed volumes so we can restart the database blank every time
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      EHRBASE_USER_ADMIN: ehrbase
+      EHRBASE_PASSWORD_ADMIN: ehrbase
+      EHRBASE_USER: ehrbase_restricted
+      EHRBASE_PASSWORD: ehrbase_restricted
+
+  robot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: robot
+    networks:
+      - ehrbase-net
+    volumes:
+      - ./tests:/tests
+    environment:
+      PORT: "8080"
+      BASEURL: "http://ehrbase:8080/ehrbase/rest/openehr/v1"
+      ECISURL: "http://ehrbase:8080/ehrbase/rest/ecis/v1"
+      ADMIN_BASEURL: "http://ehrbase:8080/ehrbase/rest/admin"
+      HEARTBEAT_URL: "http://ehrbase:8080/ehrbase/rest/status"
+      NODENAME: "local.ehrbase.org"
+      CREATING_SYSTEM_ID: "local.ehrbase.org"
+      CONTROL_MODE: "NONE"
+    command:
+      sleep infinity

@@ -25,8 +25,9 @@ Resource        ../_resources/keywords/admin_keywords.robot
 Resource        ../_resources/suite_settings.robot
 Resource        ../_resources/keywords/aql_query_keywords.robot
 
-Suite Setup         Clean DB
-Suite Teardown      Clean DB
+# TODO: We don't want to rely on mucking about in the database so for now we just skip this so the test can run?
+# Suite Setup         Clean DB
+# Suite Teardown      Clean DB
 
 
 *** Variables ***
