@@ -40,7 +40,7 @@ ${client_credentials_grant}    grant_type=client_credentials&client_id=ehrbase-c
 01 Keycloak OAuth server is online
     [Documentation]     Checks that Keycloak server is up and ready.
 
-                    Create Session    keycloak    ${KEYCLOAK_URL}
+                    Create Session    keycloak    ${KEYCLOAK_URL}    verify=${SSL_VERIFY}
     ${response}     Get Request    keycloak    /
                     Should Be Equal As Strings 	  ${response.status_code}    200
 
@@ -78,7 +78,7 @@ ${client_credentials_grant}    grant_type=client_credentials&client_id=ehrbase-c
 
 06 Base URL is secured
     [Documentation]     Checks private resource is NOT accessible without auth.
-                        Create Session    secured    ${BASEURL}
+                        Create Session    secured    ${BASEURL}    verify=${SSL_VERIFY}
     ${response}         Get Request    secured    /
                         Should Be Equal As Strings 	  ${response.status_code}    401
 
@@ -207,7 +207,7 @@ Test GET EHR Endpoint Using Password Grant Valid Token
         ...     \nBody of POST request from Mock Server should contain patient and organization id.
         ...     \npatient and organization id are set in JWT, keyword ObtainPasswordToken.
         ObtainPasswordToken
-        Create Session      ${SUT}    ${BASEURL}    debug=2
+        Create Session      ${SUT}    ${BASEURL}    debug=2    verify=${SSL_VERIFY}
         Create Headers Dict And Set EHR Headers With Authorization Bearer
         Set To Dictionary   ${headers}
         ...     Authorization=Bearer ${password_access_token}
@@ -303,7 +303,7 @@ Test GET VERSIONED_COMPOSITION Endpoint Using Password Grant Valid Token
         ...     with endpoint */rest/v1/policy/execute/name/has_consent_template*
         ...     \nBody of POST request from Mock Server should contain patient, organization id and template.
         ...     \npatient, organization id are set in JWT, keyword ObtainPasswordToken, called in first test from suite.
-        Create Session      ${SUT}    ${BASEURL}    debug=2
+        Create Session      ${SUT}    ${BASEURL}    debug=2    verify=${SSL_VERIFY}
         &{headers}          Create Dictionary
         ...     Content-Type=application/json   Accept=application/json
         ...     Prefer=return=representation    Authorization=Bearer ${password_access_token}
@@ -323,7 +323,7 @@ Test GET Composition Endpoint Using Password Grant Valid Token
         ...     with endpoint */rest/v1/policy/execute/name/has_consent_template*
         ...     \nBody of POST request from Mock Server should contain patient, organization id and template.
         ...     \npatient, organization id are set in JWT, keyword ObtainPasswordToken, called in first test from suite.
-        Create Session      ${SUT}    ${BASEURL}    debug=2
+        Create Session      ${SUT}    ${BASEURL}    debug=2    verify=${SSL_VERIFY}
         &{headers}          Create Dictionary
         ...     Content-Type=application/json   Accept=application/json
         ...     Authorization=Bearer ${password_access_token}
@@ -342,7 +342,7 @@ Test DELETE Composition Endpoint Using Password Grant Valid Token
         ...     with endpoint */rest/v1/policy/execute/name/has_consent_template*
         ...     \nBody of POST request from Mock Server should contain patient, organization id and template.
         ...     \npatient, organization id are set in JWT, keyword ObtainPasswordToken, called in first test from suite.
-        Create Session      ${SUT}    ${BASEURL}    debug=2
+        Create Session      ${SUT}    ${BASEURL}    debug=2    verify=${SSL_VERIFY}
         &{headers}          Create Dictionary
         ...     Content-Type=application/json   Accept=application/json
         ...     Prefer=return=representation    Authorization=Bearer ${password_access_token}
@@ -361,7 +361,7 @@ Test GET (Deleted) Composition Endpoint Using Password Grant Valid Token
         ...     with endpoint */rest/v1/policy/execute/name/has_consent_template*
         ...     \nBody of POST request from Mock Server should contain patient, organization id and template.
         ...     \npatient, organization id are set in JWT, keyword ObtainPasswordToken, called in first test from suite.
-        Create Session      ${SUT}    ${BASEURL}    debug=2
+        Create Session      ${SUT}    ${BASEURL}    debug=2    verify=${SSL_VERIFY}
         &{headers}          Create Dictionary
         ...     Content-Type=application/json   Accept=application/json
         ...     Authorization=Bearer ${password_access_token}
@@ -380,7 +380,7 @@ Test POST Contribution Endpoint Using Password Grant Valid Token
         ...     with endpoint */rest/v1/policy/execute/name/has_consent_template*
         ...     \nBody of POST request from Mock Server should contain patient, organization id and template.
         ...     \npatient, organization id are set in JWT, keyword ObtainPasswordToken, called in first test from suite
-        Create Session      ${SUT}    ${BASEURL}    debug=2
+        Create Session      ${SUT}    ${BASEURL}    debug=2    verify=${SSL_VERIFY}
         &{headers}          Create Dictionary
         ...     Content-Type=application/json   Accept=application/json
         ...     Prefer=return=representation    Authorization=Bearer ${password_access_token}
@@ -403,7 +403,7 @@ Test POST Query Endpoint Using Password Grant Valid Token
         ...     with endpoint */rest/v1/policy/execute/name/has_consent_template*
         ...     \nBody of POST request from Mock Server should contain patient, organization id and template.
         ...     \npatient, organization id are set in JWT, keyword ObtainPasswordToken, called in first test from suite.
-        Create Session      ${SUT}    ${BASEURL}    debug=2
+        Create Session      ${SUT}    ${BASEURL}    debug=2    verify=${SSL_VERIFY}
         &{headers}          Create Dictionary
         ...     Content-Type=application/json   Accept=application/json
         ...     Prefer=return=representation    Authorization=Bearer ${password_access_token}
@@ -429,7 +429,7 @@ Test GET Query Endpoint Using Password Grant Valid Token
         ...     with endpoint */rest/v1/policy/execute/name/has_consent_template*
         ...     \nBody of POST request from Mock Server should contain patient, organization id and template.
         ...     \npatient, organization id are set in JWT, keyword ObtainPasswordToken, called in first test from suite
-        Create Session      ${SUT}    ${BASEURL}    debug=2
+        Create Session      ${SUT}    ${BASEURL}    debug=2    verify=${SSL_VERIFY}
         &{headers}          Create Dictionary
         ...     Content-Type=application/json   Accept=application/json
         ...     Prefer=return=representation    Authorization=Bearer ${password_access_token}
@@ -490,7 +490,7 @@ Test GET Query With Multiple EHRs And Templates Using Password Grant Valid Token
 *** Keywords ***
 Request Access Token
     [Arguments]         ${grant}
-                        Create Session    keycloak   ${KEYCLOAK_URL}   verify=${False}    debug=3
+                        Create Session    keycloak   ${KEYCLOAK_URL}   verify=${SSL_VERIFY}    debug=3
     &{headers}=         Create Dictionary    Content-Type=application/x-www-form-urlencoded
     ${resp}=            POST On Session    keycloak   /realms/ehrbase/protocol/openid-connect/token   expected_status=anything
                         ...             data=${grant}   headers=${headers}
@@ -549,7 +549,7 @@ ObtainPasswordToken
     Log To Console    \nDECODED TOKEN: ${decoded_token}
 
 Create Mock Sessions
-    Create Session          server      ${MOCK_URL}
+    Create Session          server      ${MOCK_URL}    verify=${SSL_VERIFY}
     Create Mock Session     ${MOCK_URL}
 
 Reset Mock Server

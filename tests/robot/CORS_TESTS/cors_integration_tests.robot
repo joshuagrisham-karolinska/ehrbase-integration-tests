@@ -70,7 +70,7 @@ Test CORS No Auth
 Create New Session And Perform Get Template
     [Documentation]     Create new session and perform Get template API call
     Create Session      ${SUT}    ${BASEURL}    debug=2
-        ...             auth=${CREDENTIALS}     verify=True
+        ...             auth=${CREDENTIALS}    verify=${SSL_VERIFY}
     &{headers}          Create Dictionary
         ...     Access-Control-Request-Method=GET
         ...     Origin=https://client.ehrbase.org

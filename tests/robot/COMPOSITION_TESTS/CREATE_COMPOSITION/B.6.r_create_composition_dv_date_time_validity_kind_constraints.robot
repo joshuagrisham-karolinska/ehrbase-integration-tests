@@ -242,12 +242,12 @@ Commit Composition Using Robot Templates
 
     IF   '${format}'=='CANONICAL_JSON'
         Create Session      ${SUT}    ${BASEURL}    debug=2
-        ...                 auth=${CREDENTIALS}    verify=True
+        ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
         Set To Dictionary   ${headers}   Content-Type=application/json
         Set To Dictionary   ${headers}   Accept=application/json
     ELSE IF   '${format}'=='CANONICAL_XML'
         Create Session      ${SUT}    ${BASEURL}    debug=2
-        ...                 auth=${CREDENTIALS}    verify=True
+        ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
         Set To Dictionary   ${headers}   Content-Type=application/xml
         Set To Dictionary   ${headers}   Accept=application/xml
     ELSE IF   '${format}'=='FLAT'
@@ -263,15 +263,15 @@ Commit Composition Using Robot Templates
         END
         &{params}       Create Dictionary     format=FLAT   ehrId=${ehr_id}     templateId=${template_id}
         Create Session      ${SUT}    ${ECISURL}    debug=2
-        ...                 auth=${CREDENTIALS}    verify=True
+        ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
     ELSE IF   '${format}'=='TDD'
         Create Session      ${SUT}    ${BASEURL}    debug=2
-        ...                 auth=${CREDENTIALS}    verify=True
+        ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
         Set To Dictionary   ${headers}   Content-Type=application/openehr.tds2+xml
         Set To Dictionary   ${headers}   Accept=application/openehr.tds2+xml
     ELSE IF   '${format}'=='STRUCTURED'
         Create Session      ${SUT}    ${BASEURL}    debug=2
-        ...                 auth=${CREDENTIALS}    verify=True
+        ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
         Set To Dictionary   ${headers}   Content-Type=application/openehr.wt.structured+json
         Set To Dictionary   ${headers}   Accept=application/openehr.wt.structured+json
     END

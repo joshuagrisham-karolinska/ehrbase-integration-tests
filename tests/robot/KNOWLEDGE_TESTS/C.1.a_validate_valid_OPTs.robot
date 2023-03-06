@@ -109,7 +109,7 @@ Versioned
 #     Log To Console    auth=${${SUT}.CREDENTIALS}
 #
 #     Create Session    ${SUT}   ${${SUT}.URL}
-#     ...               auth=${${SUT}.CREDENTIALS}    debug=2    verify=True
+#     ...               auth=${${SUT}.CREDENTIALS}    debug=2    verify=${SSL_VERIFY}
 #     ${resp}=          Get Request    ${SUT}    /definition/template/adl1.4
 #                       Log To Console    ${resp.content}
 #                       Should Be Equal As Strings    ${resp.status_code}    200
@@ -172,7 +172,7 @@ server's response indicates that OPT is valid
 #
 # Upload OPT
 #    [Documentation]   Creates an OPT from it's canonical XML form.
-#    Create Session   ethlocal   ${baseurl}
+#    Create Session   ethlocal   ${baseurl}    verify=${SSL_VERIFY}
 #    ${opt}   Get File   ${VALID DATA SETS}${/}all_types/Test_all_types.opt
 #    &{headers}=    Create Dictionary    Content-Type=application/xml
 #    ${resp}   Post Request   ethlocal   /template   data=${opt}   headers=${headers}
@@ -191,7 +191,7 @@ server's response indicates that OPT is valid
 #
 # Delete OPT
 #     [Documentation]  TODO
-#     Create Session   ethlocal   ${baseurl}
+#     Create Session   ethlocal   ${baseurl}    verify=${SSL_VERIFY}
 #     ${resp}   Delete Request   ethlocal   /template/test_all_types.en.v1
 #     Run Keyword If   ${resp.status_code} == 405   Log   DELETE is not supported   ERROR
 #     Run Keyword If   ${resp.status_code} != 200  Set Tags  not-ready

@@ -140,7 +140,7 @@ Create Session For EHR With Headers For Multitenancy With Bearer Token
                         ...                 Prefer=return=representation
                         ...                 &{additionalHeaders}
     Create Session      ${SUT}    ${BASEURL}    debug=2
-                        ...                 headers=${headersEhrMultitenancy}    verify=True
+                        ...                 headers=${headersEhrMultitenancy}    verify=${SSL_VERIFY}
                         Set Test Variable   ${headers}    &{headersEhrMultitenancy}
 
 Create New EHR With Multitenant Token

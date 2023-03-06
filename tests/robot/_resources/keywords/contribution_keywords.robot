@@ -298,7 +298,7 @@ POST transaction-management/ehr/ehr_id/contribution/contribution_id/rollback
                         END
     &{headers}          Set Headers         ${headers}
     Create Session      ${SUT}    ${PLUGIN_URL}    debug=2
-                        ...                 headers=${headers}    verify=True
+                        ...                 headers=${headers}    verify=${SSL_VERIFY}
 
                         Set Suite Variable   ${headers}    ${headers}
     ${resp}             POST On Session     ${SUT}
@@ -549,5 +549,5 @@ Output Debug Info:
 #                         ...                 Accept=${accept}
 #                         Run Keyword If      ${others}    Set To Dictionary    ${headers}    &{others}
 #                         Create Session      ${SUT}    ${${SUT}.URL}
-#                         ...                 auth=${${SUT}.CREDENTIALS}    debug=2    verify=True
+#                         ...                 auth=${${SUT}.CREDENTIALS}    debug=2    verify=${SSL_VERIFY}
 #                         Set Test Variable   ${headers}    ${headers}

@@ -283,7 +283,7 @@ Create Session For Commit Composition With Multitenant Token
     ...     Authorization=Bearer ${multitenancy_token}
     Set Suite Variable      &{headersMultitenancy}  &{headers}
     Delete All Sessions
-    Create Session      ${SUT}    ${BASEURL}    debug=2   headers=${headersMultitenancy}
+    Create Session      ${SUT}    ${BASEURL}    debug=2   headers=${headersMultitenancy}    verify=${SSL_VERIFY}
 
 
 commit composition
@@ -313,12 +313,12 @@ commit composition
 
     IF   '${format}'=='CANONICAL_JSON'
         Create Session      ${SUT}    ${BASEURL}    debug=2
-        ...                 auth=${CREDENTIALS}    verify=True
+        ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
         Set To Dictionary   ${headers}   Content-Type=application/json
         Set To Dictionary   ${headers}   Accept=application/json
     ELSE IF   '${format}'=='CANONICAL_XML'
         Create Session      ${SUT}    ${BASEURL}    debug=2
-        ...                 auth=${CREDENTIALS}    verify=True
+        ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
         Set To Dictionary   ${headers}   Content-Type=application/xml
         Set To Dictionary   ${headers}   Accept=application/xml
     ELSE IF   '${format}'=='FLAT'
@@ -334,15 +334,15 @@ commit composition
         END
         &{params}       Create Dictionary     format=FLAT   ehrId=${ehr_id}     templateId=${template_id}
         Create Session      ${SUT}    ${ECISURL}    debug=2
-        ...                 auth=${CREDENTIALS}    verify=True
+        ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
     ELSE IF   '${format}'=='TDD'
         Create Session      ${SUT}    ${BASEURL}    debug=2
-        ...                 auth=${CREDENTIALS}    verify=True
+        ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
         Set To Dictionary   ${headers}   Content-Type=application/openehr.tds2+xml
         Set To Dictionary   ${headers}   Accept=application/openehr.tds2+xml
     ELSE IF   '${format}'=='STRUCTURED'
         Create Session      ${SUT}    ${BASEURL}    debug=2
-        ...                 auth=${CREDENTIALS}    verify=True
+        ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
         Set To Dictionary   ${headers}   Content-Type=application/openehr.wt.structured+json
         Set To Dictionary   ${headers}   Accept=application/openehr.wt.structured+json
     END
@@ -381,7 +381,7 @@ Commit Composition With Multitenant Token
     ...     Prefer=return=representation
     ...     Authorization=Bearer ${multitenancy_token}
     Create Session      ${SUT}      ${BASEURL}      debug=2
-    ...                 verify=True     headers=${headers}
+    ...                 headers=${headers}    verify=${SSL_VERIFY}
     ${file}     Get File    ${COMPO DATA SETS}/CANONICAL_JSON/${composition}
     ${resp}     POST On Session     ${SUT}      /ehr/${ehr_id}/composition
     ...         data=${file}    headers=${headers}      expected_status=anything
@@ -474,7 +474,7 @@ Update Composition With Multitenant Token
                         ...                 If-Match=${composition_uid}
                         ...                 Authorization=Bearer ${multitenancy_token}
     Create Session      ${SUT}      ${BASEURL}      debug=2
-    ...                 verify=True         headers=${headers}
+    ...                 headers=${headers}    verify=${SSL_VERIFY}
     ${composition_id}   Remove String       ${composition_uid}    ::${CREATING_SYSTEM_ID}::1
     &{params}           Create Dictionary   ehr_id=${ehr_id}    composition_id=${composition_id}
     ${resp}             PUT On Session      ${SUT}          /ehr/${ehr_id}/composition/${composition_id}
@@ -540,7 +540,7 @@ update composition (JSON)
         ...                 If-Match=${composition_uid}
         ...                 &{authorizationHeaders}
         Create Session      ${SUT}    ${BASEURL}    debug=2
-        ...                 headers=${headersUpdateCompoMultitenancy}    verify=True
+        ...                 headers=${headersUpdateCompoMultitenancy}    verify=${SSL_VERIFY}
         Set Test Variable   ${headers}      &{headersUpdateCompoMultitenancy}
         ${composition_id}   Remove String           ${composition_uid}    ::${CREATING_SYSTEM_ID}::1
         &{params}           Create Dictionary       ehr_id=${ehr_id}   composition_id=${composition_id}
@@ -760,7 +760,7 @@ get composition by composition_uid
         ...     Authorization=Bearer ${multitenancy_token}
         Set Test Variable      &{headers}  &{headers}
         Delete All Sessions
-        Create Session      ${SUT}    ${BASEURL}    debug=2   headers=${headersMultitenancy}
+        Create Session      ${SUT}    ${BASEURL}    debug=2   headers=${headersMultitenancy}    verify=${SSL_VERIFY}
     END
 
     ${resp}=            GET On Session         ${SUT}    /ehr/${ehr_id}/composition/${uid}    expected_status=anything   headers=${headers}
@@ -779,7 +779,7 @@ get composition by composition_uid
     # because the response from the create compo has this endpoint in the Location header
     &{params}=          Create Dictionary     format=FLAT
     Create Session      ${SUT}    ${ECISURL}    debug=2
-        ...                 auth=${CREDENTIALS}    verify=True
+        ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
     ${resp}=            GET On Session         ${SUT}  composition/${uid}  params=${params}  expected_status=anything   headers=${headers}
                         log to console      ${resp.content}
                         Set Test Variable   ${response}    ${resp}
@@ -789,7 +789,7 @@ Get Web Template By Template Id (ECIS)
     [Arguments]         ${template_id}      ${responseFormat}=default
 
     Create Session      ${SUT}    ${ECISURL}    debug=2
-    ...                 auth=${CREDENTIALS}    verify=True
+    ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
     IF          '${responseFormat}' == 'JSON'
         &{params}           Create Dictionary       format=JSON
         &{headers}          Create Dictionary       Content-Type=application/json
@@ -814,7 +814,7 @@ Get Example Of Web Template By Template Id (ECIS)
     [Arguments]         ${template_id}      ${responseFormat}
 
     Create Session      ${SUT}    ${ECISURL}    debug=2
-    ...                 auth=${CREDENTIALS}    verify=True
+    ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
     &{params}          Create Dictionary      format=${responseFormat}
     ${headers}         Create Dictionary      Accept=application/json
     ...                                       Content-Type=application/xml
@@ -835,7 +835,7 @@ Get Example Of Web Template By Template Id (OPENEHR)
     [Arguments]         ${template_id}      ${responseFormat}
 
     Create Session      ${SUT}    ${baseurl}    debug=2
-    ...                 auth=${CREDENTIALS}    verify=True
+    ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
     &{params}          Create Dictionary     format=${responseFormat}
     ${headers}         Create Dictionary     Accept=application/json
     ...                                      Content-Type=application/xml
@@ -884,7 +884,7 @@ Validate Response Body Has Format
 
 Get All Web Templates
     Create Session      ${SUT}    ${ECISURL}    debug=2
-    ...                 auth=${CREDENTIALS}    verify=True
+    ...                 auth=${CREDENTIALS}    verify=${SSL_VERIFY}
     ${resp}=            GET On Session          ${SUT}  template  expected_status=anything   headers=${headers}
                         log to console          ${resp.content}
                         Set Test Variable       ${response}    ${resp}
@@ -1266,7 +1266,7 @@ Upload OPT
                             Delete All Sessions
                         END
 
-                        Create Session      ${SUT}    ${BASEURL}    debug=2   headers=${headers}
+                        Create Session      ${SUT}    ${BASEURL}    debug=2   headers=${headers}    verify=${SSL_VERIFY}
 
     # Run Keyword If    '${accept-header}'=='XML'    start request session (XML)
 

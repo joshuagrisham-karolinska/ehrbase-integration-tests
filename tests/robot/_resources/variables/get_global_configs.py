@@ -37,6 +37,7 @@ parser.add_argument('--SECURITY_AUTHTYPE', action=EnvDefault, envvar='SECURITY_A
 parser.add_argument('--NODENAME', action=EnvDefault, envvar='NODENAME', required=False)
 parser.add_argument('--CREATING_SYSTEM_ID', action=EnvDefault, envvar='CREATING_SYSTEM_ID', required=False)
 parser.add_argument('--CONTROL_MODE', action=EnvDefault, envvar='CONTROL_MODE', required=False)
+parser.add_argument('--SSL_VERIFY', action=EnvDefault, envvar='SSL_VERIFY', required=False)
 parser.add_argument('--SUT', action=EnvDefault, envvar='SUT', required=False)
 
 def get_variables():

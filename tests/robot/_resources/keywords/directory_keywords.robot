@@ -512,7 +512,7 @@ PUT /ehr/ehr_id/directory
                         ...     Prefer=return=representation
                         ...     If-Match=${preceding_version_uid}
                         ...     Authorization=Bearer ${multitenancy_token}
-                        Create Session      ${SUT}    ${BASEURL}    debug=2   headers=${headers}
+                        Create Session      ${SUT}    ${BASEURL}    debug=2   headers=${headers}    verify=${SSL_VERIFY}
     END
 
     ${resp}=            Put On Session      ${SUT}   /ehr/${ehr_id}/directory   expected_status=anything
@@ -579,7 +579,7 @@ DELETE /ehr/ehr_id/directory
                         ...     Accept=application/json
                         ...     If-Match=${preceding_version_uid}
                         ...     Authorization=Bearer ${multitenancy_token}
-                        Create Session      ${SUT}    ${BASEURL}    debug=2   headers=${headers}
+                        Create Session      ${SUT}    ${BASEURL}    debug=2   headers=${headers}    verify=${SSL_VERIFY}
     END
 
     ${resp}=            Delete On Session   ${SUT}   /ehr/${ehr_id}/directory   expected_status=anything
@@ -623,7 +623,7 @@ GET /ehr/ehr_id/directory/version_uid
                         ...     Accept=application/json
                         ...     Prefer=return=representation
                         ...     Authorization=Bearer ${multitenancy_token}
-                        Create Session      ${SUT}    ${BASEURL}    debug=2   headers=${headers}
+                        Create Session      ${SUT}    ${BASEURL}    debug=2   headers=${headers}    verify=${SSL_VERIFY}
     END
 
     ${resp}=            GET On Session         ${SUT}   /ehr/${ehr_id}/directory/${version_uid}   expected_status=anything
@@ -668,7 +668,7 @@ GET /ehr/ehr_id/directory
                         ...     Accept=application/json
                         ...     Prefer=return=representation
                         ...     Authorization=Bearer ${multitenancy_token}
-                        Create Session      ${SUT}    ${BASEURL}    debug=2   headers=${headers}
+                        Create Session      ${SUT}    ${BASEURL}    debug=2   headers=${headers}    verify=${SSL_VERIFY}
     END
 
     ${resp}=            GET On Session         ${SUT}   /ehr/${ehr_id}/directory   expected_status=anything
@@ -1280,5 +1280,5 @@ VARIANTS x2 (JSON / XML)
 #                         ...                 Accept=${accept}
 #                         Run Keyword If      ${extra_headers}    Set To Dictionary    ${headers}    &{extra_headers}
 #                         Create Session      ${SUT}    ${${SUT}.URL}    debug=2
-#                         ...                 auth=${${SUT}.CREDENTIALS}    verify=True
+#                         ...                 auth=${${SUT}.CREDENTIALS}    verify=${SSL_VERIFY}
 #                         Set Test Variable   ${headers}    ${headers}

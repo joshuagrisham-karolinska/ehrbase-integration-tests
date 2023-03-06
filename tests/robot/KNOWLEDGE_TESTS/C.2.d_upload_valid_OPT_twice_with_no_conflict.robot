@@ -118,7 +118,7 @@ All Types
 #     Log To Console    auth=${${SUT}.CREDENTIALS}
 #
 #     Create Session    ${SUT}   ${${SUT}.URL}
-#     ...               auth=${${SUT}.CREDENTIALS}    debug=2    verify=True
+#     ...               auth=${${SUT}.CREDENTIALS}    debug=2    verify=${SSL_VERIFY}
 #     ${resp}=          Get Request    ${SUT}    /definition/template/adl1.4
 #                       Log To Console    ${resp.content}
 #                       Should Be Equal As Strings    ${resp.status_code}    200

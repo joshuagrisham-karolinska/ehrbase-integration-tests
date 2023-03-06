@@ -410,7 +410,7 @@ set request headers
 
     # comment: headers for RequestLibrary
                         Create Session      ${SUT}    ${BASEURL}    debug=2
-                        ...                 headers=${headers}    verify=True
+                        ...                 headers=${headers}    verify=${SSL_VERIFY}
 
                         Set Suite Variable   ${headers}    ${headers}
 
@@ -435,6 +435,8 @@ server sanity check
     [Documentation]     Sends a GET request to ${HEARTBEAT_URL} to check whether
     ...                 the server is up and running.
     
+    Return From Keyword If    "${CONTROL_MODE}"=="NONE"    ${TRUE}  # NO SERVER CHECK ON REMOTE SUT
+
     ${server_status}    Run Keyword And Return Status    openehr server is online
     [RETURN]            ${server_status}
 

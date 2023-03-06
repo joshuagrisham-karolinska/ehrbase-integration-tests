@@ -79,7 +79,7 @@ CODE SYSTEM GET Using Validate Code Operation - Missing Code And System URL Para
 
 *** Keywords ***
 Create Sessions
-    Create Session          server      ${MOCK_URL}
+    Create Session          server      ${MOCK_URL}    verify=${SSL_VERIFY}
     Create Mock Session     ${MOCK_URL}
 
 Reset Mock Server

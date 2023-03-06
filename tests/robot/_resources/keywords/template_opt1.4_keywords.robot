@@ -255,7 +255,7 @@ upload valid template (XML)
     [Arguments]    ${template}
     [Documentation]    ${VALID DATA SETS} is path to data-sets
 
-    Create Session  ethlocal  ${baseurl}
+    Create Session  ethlocal  ${baseurl}    verify=${SSL_VERIFY}
     ${file}=  Get File  ${VALID DATA SETS}${template}
     &{headers}=  Create Dictionary  Content-Type=application/xml
     ${resp}=  POST On Session  ethlocal  /template  data=${file}  headers=${headers}   expected_status=anything
@@ -290,7 +290,7 @@ upload valid template (XML)
 
 # start request session
 #     Create Session      ${SUT}    ${${SUT}.URL}
-#     ...                 auth=${${SUT}.CREDENTIALS}    debug=2    verify=True
+#     ...                 auth=${${SUT}.CREDENTIALS}    debug=2    verify=${SSL_VERIFY}
 #     &{headers}=         Create Dictionary    Content-Type=application/xml
 #                         ...                  Prefer=return=representation
 #                         Set Suite Variable    ${headers}    ${headers}
@@ -298,7 +298,7 @@ upload valid template (XML)
 
 # start request session (XML)
 #     Create Session      ${SUT}    ${${SUT}.URL}
-#     ...                 auth=${${SUT}.CREDENTIALS}    debug=2    verify=True
+#     ...                 auth=${${SUT}.CREDENTIALS}    debug=2    verify=${SSL_VERIFY}
 #     &{headers}=         Create Dictionary    Content-Type=application/xml
 #                         ...                  Prefer=return=representation
 #                         ...                  Accept=application/xml

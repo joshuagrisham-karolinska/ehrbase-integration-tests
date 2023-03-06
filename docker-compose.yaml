@@ -56,7 +56,6 @@ services:
       ADMIN_BASEURL: "http://ehrbase:8080/ehrbase/rest/admin"
       HEARTBEAT_URL: "http://ehrbase:8080/ehrbase/rest/status"
       NODENAME: "local.ehrbase.org"
-      CREATING_SYSTEM_ID: "local.ehrbase.org"
       CONTROL_MODE: "NONE"
     command:
       sleep infinity

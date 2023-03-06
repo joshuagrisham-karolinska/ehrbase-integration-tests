@@ -24,7 +24,7 @@ Documentation   General setting for OpenEHR test suites.
 # Bring in variables from arguments / env / file before anything else
 Variables   variables/sut_config.py
 
-Library     REST    ${BASEURL}    #ssl_verify=false
+Library     REST    ${BASEURL}    ssl_verify=${SSL_VERIFY}
 Library     RequestsLibrary  WITH NAME  R
 Library     String
 Library     Collections
