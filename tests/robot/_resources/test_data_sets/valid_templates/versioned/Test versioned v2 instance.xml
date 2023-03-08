@@ -1,4 +1,4 @@
-<version xmlns="http://schemas.openehr.org/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ORIGINAL_VERSION">
+<version xmlns:nsTODO="http://schemas.openehr.org/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ORIGINAL_VERSION">
   <contribution>
     <id xsi:type="HIER_OBJECT_ID">
       <value>d1c36a5e-2383-45a6-b3b5-f891c4bba6cd</value>

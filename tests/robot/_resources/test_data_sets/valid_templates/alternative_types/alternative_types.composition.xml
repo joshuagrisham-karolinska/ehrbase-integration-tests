@@ -1,4 +1,4 @@
-<composition xmlns="http://schemas.openehr.org/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" archetype_node_id="openEHR-EHR-COMPOSITION.alternative_types.v1">
+<composition xmlns:nsTODO="http://schemas.openehr.org/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" archetype_node_id="openEHR-EHR-COMPOSITION.alternative_types.v1">
   <name>
     <value>Alternative types</value>
   </name>

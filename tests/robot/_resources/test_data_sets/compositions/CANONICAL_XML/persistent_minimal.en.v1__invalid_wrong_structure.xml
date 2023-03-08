@@ -1,5 +1,5 @@
 ?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-  <composition xmlns="http://schemas.openehr.org/v1" xmlns:ns2="http://schemas.openehr.org/v2" archetype_node_id="openEHR-EHR-COMPOSITION.persistent_minimal.v1">
+  <composition xmlns:nsTODO="http://schemas.openehr.org/v1" xmlns:ns2="http://schemas.openehr.org/v2" archetype_node_id="openEHR-EHR-COMPOSITION.persistent_minimal.v1">
     <name>
       <value>Persistent minimal</value>
     </name>
