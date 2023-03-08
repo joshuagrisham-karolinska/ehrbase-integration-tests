@@ -276,7 +276,7 @@ Create Session For Commit Composition With Multitenant Token
     ...     - `Dependent of keyword:` commit composition.
     [Arguments]      ${template}     ${multitenancy_token}
     &{headers}      Create Dictionary
-    ...     Prefer=return=representation    openEHR-VERSION.lifecycle_state=complete
+    ...     Prefer=return=representation    openEHR-VERSION.lifecycle_state=code_string="532"
     ...     openEHR-TEMPLATE_ID=${template}
     ...     Content-Type=application/json
     ...     Accept=application/json
@@ -289,7 +289,7 @@ Create Session For Commit Composition With Multitenant Token
 commit composition
     [Arguments]         ${format}   ${composition}
     ...         ${need_template_id}=true   ${prefer}=representation
-    ...         ${lifecycle}=complete    ${extTemplateId}=false     ${multitenancy_token}=${None}
+    ...         ${lifecycle}=code_string="532"    ${extTemplateId}=false     ${multitenancy_token}=${None}
     [Documentation]     Creates the first version of a new COMPOSITION
     ...                 DEPENDENCY: `upload OPT`, `create EHR`
     ...
@@ -1365,6 +1365,7 @@ capture point in time
     ${time}=            Set Variable    ${{ datetime.datetime.now(tz=tzlocal.get_localzone()).isoformat() }}
     ${offset}=          Set Suite Variable    ${utc_offset}    ${time}[-6:]
                         Set Suite Variable   ${time_${point_in_time}}   ${time}
+                        Sleep    1   # gives buffer time to account for clock difference between system running robot and system running service
 
 
 

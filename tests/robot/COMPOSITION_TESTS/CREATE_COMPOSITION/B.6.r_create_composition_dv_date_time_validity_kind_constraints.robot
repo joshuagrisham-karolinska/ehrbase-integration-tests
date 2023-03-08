@@ -218,7 +218,7 @@ Load Json File With Composition
 Commit Composition Using Robot Templates
     [Arguments]         ${format}   ${composition}
     ...         ${need_template_id}=true   ${prefer}=representation
-    ...         ${lifecycle}=complete    ${extTemplateId}=false
+    ...         ${lifecycle}=code_string="532"    ${extTemplateId}=false
     [Documentation]     Creates the first version of a new COMPOSITION
     ...                 DEPENDENCY: `upload OPT`, `create EHR`
     ...

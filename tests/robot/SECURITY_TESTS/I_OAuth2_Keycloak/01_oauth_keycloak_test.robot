@@ -532,7 +532,7 @@ Create Headers Dict And Set Composition Headers With Authorization Bearer
     &{headers}          Create Dictionary     &{EMPTY}
     Set To Dictionary   ${headers}
     ...     Content-Type=application/json   Accept=application/json
-    ...     Prefer=return=representation    openEHR-VERSION.lifecycle_state=complete
+    ...     Prefer=return=representation    openEHR-VERSION.lifecycle_state=code_string="532"
     Set Test Variable       ${headers}      ${headers}
 
 ObtainPasswordToken
