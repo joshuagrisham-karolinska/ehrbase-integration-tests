@@ -152,7 +152,7 @@ Create New EHR With Multitenant Token
     ${resp}             POST on session     ${SUT}    /ehr
     ...         expected_status=anything        headers=${headers}
     Should Be Equal As Strings      ${resp.status_code}     201
-    ${ehrstatus_uid}    Set Variable        ${resp.json()['ehr_status']['uid']['value']}
+    ${ehrstatus_uid}    Set Variable        ${resp.json()['ehr_status']['id']['value']}
     ${short_uid}        Remove String       ${ehrstatus_uid}    ::${CREATING_SYSTEM_ID}::1
     Set Suite Variable    ${ehr_id}         ${resp.json()['ehr_id']['value']}
     Set Suite Variable    ${system_id}      ${resp.json()['system_id']['value']}
@@ -808,7 +808,7 @@ extract ehrstatus_uid (JSON)
     [Documentation]     Extracts uuid of ehr_status from response of preceding request.
     ...                 DEPENDENCY: `create new EHR`
 
-    ${ehrstatus_uid}=   String       response body ehr_status uid value
+    ${ehrstatus_uid}=   String       response body ehr_status id value
 
                         Log To Console    \n\tDEBUG OUTPUT - EHR_STATUS UUID: \n\t${ehrstatus_uid}[0]
                         Set Suite Variable    ${ehrstatus_uid}   ${ehrstatus_uid}[0]
