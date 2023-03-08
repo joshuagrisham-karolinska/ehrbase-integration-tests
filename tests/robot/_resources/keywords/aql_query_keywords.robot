@@ -343,9 +343,10 @@ check response (LOADED DB): returns correct content
                         Output    ${expected result}
 
     &{diff}             compare_jsons_ignoring_properties    ${response body}    ${expected result}
-    ...                 meta    name
-    # ...                 meta    path    foo        # comment: example of how to add additional
-                                                     #          properties to be ignored
+    ...                 meta    name    columns     # comment: properties to be ignored in the comparison
+                                                    # TODO:
+                                                    #   `name` ignored since it is optional and not always given when running ad-hoc queries
+                                                    #   `columns` are ignored for now as "path" is optional and implemented differently in different APIs
     ...                 report_repetition=${TRUE}
     ...                 ignore_string_case=${TRUE}
     ...                 ignore_order=${ignore_order}
@@ -368,7 +369,10 @@ check response (EMPTY DB): returns correct content for
                         Output    ${expected result}
 
     &{diff}=            compare_jsons_ignoring_properties  ${response body}  ${expected result}
-    ...                 meta    name
+    ...                 meta    name    columns     # comment: properties to be ignored in the comparison
+                                                    # TODO:
+                                                    #   `name` ignored since it is optional and not always given when running ad-hoc queries
+                                                    #   `columns` are ignored for now as "path" is optional and implemented differently in different APIs
                         Should Be Empty  ${diff}  msg=DIFF DETECTED!
 
 
