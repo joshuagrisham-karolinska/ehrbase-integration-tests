@@ -343,6 +343,7 @@ check response (LOADED DB): returns correct content
                         Output    ${expected result}
 
     &{diff}             compare_jsons_ignoring_properties    ${response body}    ${expected result}
+    ...                 meta    name
     # ...                 meta    path    foo        # comment: example of how to add additional
                                                      #          properties to be ignored
     ...                 report_repetition=${TRUE}
@@ -367,6 +368,7 @@ check response (EMPTY DB): returns correct content for
                         Output    ${expected result}
 
     &{diff}=            compare_jsons_ignoring_properties  ${response body}  ${expected result}
+    ...                 meta    name
                         Should Be Empty  ${diff}  msg=DIFF DETECTED!
 
 
